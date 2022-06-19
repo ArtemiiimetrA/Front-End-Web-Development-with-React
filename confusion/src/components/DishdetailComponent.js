@@ -31,10 +31,15 @@ class Dishdetail extends Component {
         if (comments != null) {
             return comments.map((comment) => {
                 return (
-                    <div key={comment.id}>
+                    <li key={comment.id} className="list-unstyled">
                         <p>{comment.comment}</p>
-                        <p>-- {comment.author} {comment.date}</p>
-                    </div>
+                        <p>-- {comment.author}, &nbsp;
+                            {new Intl.DateTimeFormat("en-US", {
+                                year: "numeric",
+                                month: "long",
+                                day: "2-digit",
+                            }).format(new Date(comment.date))}</p>
+                    </li>
                 );
             });
         }
