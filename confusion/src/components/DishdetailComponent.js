@@ -13,15 +13,17 @@ import { Link } from 'react-router-dom';
 function RenderDish({ dish }) {
     if (dish != null) {
         return (
-            <Card>
-                <CardImg width="100" src={dish.image} alt={dish.name} />
-                <CardBody>
-                    <CardTitle>{dish.name}</CardTitle>
-                    <CardText>
-                        {dish.description}
-                    </CardText>
-                </CardBody>
-            </Card>
+            <div className="col-12 col-md-5 m-1">
+                <Card>
+                    <CardImg width="100" src={dish.image} alt={dish.name} />
+                    <CardBody>
+                        <CardTitle>{dish.name}</CardTitle>
+                        <CardText>
+                            {dish.description}
+                        </CardText>
+                    </CardBody>
+                </Card>
+            </div>
         );
     }
     else {
@@ -31,7 +33,7 @@ function RenderDish({ dish }) {
     }
 }
 
-function RenderComments({ comments }) {
+function RenderComments({ comments, addComment, dishId }) {
     if (comments != null) {
         const renderComments = comments.map((comment) => {
             return (
@@ -44,11 +46,12 @@ function RenderComments({ comments }) {
         });
 
         return (
-            <>
+            <div className="col-12 col-md-5 m-1">
                 <h4>Comments</h4>
-                {renderComments}
-                <CommentForm />
-            </>
+                <ul>
+                    {renderComments}
+                </ul>
+                <CommentForm dishId={dishId} addComment={addComment} />            </div>
         );
     }
     else {
@@ -79,9 +82,8 @@ class CommentForm extends Component {
     }
 
     handleSubmitComment(values) {
-        console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
         this.toggleModal();
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -171,12 +173,11 @@ const Dishdetail = (props) => {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-12 col-md-5 m-1">
-                        <RenderDish dish={props.dish} />
-                    </div>
-                    <div className="col-12 col-md-5 m-1">
-                        <RenderComments comments={props.comments} />
-                    </div>
+                    <RenderDish dish={props.dish} />
+                    <RenderComments comments={props.comments}
+                        addComment={props.addComment}
+                        dishId={props.dish.id}
+                    />
                 </div>
             </div>
         );
