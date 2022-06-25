@@ -35,7 +35,7 @@ function RenderDish({ dish }) {
     }
 }
 
-function RenderComments({ comments, addComment, dishId }) {
+function RenderComments({ comments, postComment, dishId }) {
     if (comments != null) {
         const renderComments = comments.map((comment) => {
             return (
@@ -53,7 +53,7 @@ function RenderComments({ comments, addComment, dishId }) {
                 <ul>
                     {renderComments}
                 </ul>
-                <CommentForm dishId={dishId} addComment={addComment} />            </div>
+                <CommentForm dishId={dishId} postComment={postComment} />            </div>
         );
     }
     else {
@@ -85,7 +85,7 @@ class CommentForm extends Component {
 
     handleSubmitComment(values) {
         this.toggleModal();
-        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+        this.props.postComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -193,7 +193,7 @@ const Dishdetail = (props) => {
                 <div className="row">
                     <RenderDish dish={props.dish} />
                     <RenderComments comments={props.comments}
-                        addComment={props.addComment}
+                        postComment={props.postComment}
                         dishId={props.dish.id}
                     />
                 </div>
